@@ -17,7 +17,7 @@ module.exports = class Device extends EventEmitter {
 
 		for (let i = 0; i < leds.length; i++) {
 			leds[i] = String(leds[i]);
-			if (!leds[i].match(/^[a-zA-Z0-9_\-]+$/)) {
+			if (!leds[i].match(/^[a-zA-Z0-9_-]+$/)) {
 				throw new Error("Invalid LED index `" + leds[i] + "`");
 			}
 		}

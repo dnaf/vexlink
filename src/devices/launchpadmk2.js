@@ -39,11 +39,10 @@ module.exports = class LaunchpadMK2 extends Device {
 	_getLEDIndex(x, y) {
 		if (y > 0 && x >= 0 && x <= 8) {
 			return 0x0B + (8 - y) * 10 + x;
-		} else if (y == 0 && x >= 0 && x < 8) { // yes, i do actually mean < x and not <= x. the top row of buttons only has 7 buttons
+		} else if (y === 0 && x >= 0 && x < 8) { // Yes, i do actually mean < x and not <= x. the top row of buttons only has 7 buttons
 			return 0x68 + x;
-		} else {
-			return -1
 		}
+		return -1;
 	}
 
 	setLED(leds, color) {

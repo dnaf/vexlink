@@ -1,10 +1,8 @@
 const Promise = require("bluebird");
 
 const _ = require("lodash");
-const Color = require("color");
 const cp = Promise.promisifyAll(require("child_process"));
 const debug = require("debug")("vexlink");
-const fs = Promise.promisifyAll(require("fs"));
 const i3Client = require("i3").createClient();
 const K70 = require("./devices/k70");
 const LaunchpadMK2 = require("./devices/launchpadmk2");

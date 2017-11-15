@@ -27,7 +27,7 @@ module.exports = class WorkspaceBar {
 		for (const i in this.leds) {
 			console.log(workspaces, i);
 			const workspace = _.find(workspaces, ["name", i]);
-			
+
 			if (workspace) {
 				let color = this.openColor;
 				if (workspace.focused) {

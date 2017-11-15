@@ -125,7 +125,6 @@ class Cava extends EventEmitter {
 			if (file === Path.basename(this._fifoPath)) {
 				watcher.close();
 				this._stream = fs.createReadStream(this._fifoPath);
-				// This._stream.on("readable", (data) => { this._read() });
 				setInterval(() => {
 					this._read();
 				}, 1);
