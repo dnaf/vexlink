@@ -2,6 +2,7 @@ const Promise = require("bluebird");
 
 const _ = require("lodash");
 const cp = require("child_process");
+const debug = require("debug")("vexlink:cava");
 const EventEmitter = require("events");
 const fs = Promise.promisifyAll(require("fs"));
 const ini = require("ini");
@@ -55,10 +56,10 @@ class Cava extends EventEmitter {
 		});
 
 		this._options = options;
-		this._id = Number(new Date()) + Math.floor(Math.random() * 99);
+		this._id = Number(new Date()) + "_" + Math.floor(Math.random() * 999);
 		this._cb = callback;
 
-		console.log(this._configPath);
+		debug("Created Cava instance with config path %s", this._configPath);
 
 		this._run();
 	}

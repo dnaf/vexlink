@@ -9,7 +9,7 @@ module.exports = class LaunchpadMK2 extends Device {
 
 		for (let y = 0; y < 8; y++) {
 			for (let x = 0; x < 9; x++) {
-				const i = this._getLEDIndex(x, y),
+				const i = this._getLEDIndex(x, y);
 				this.nodes[i] = {
 					hasLED: true,
 					hasButton: true,
@@ -36,31 +36,37 @@ module.exports = class LaunchpadMK2 extends Device {
 		}
 	}
 
-
-
 	_getLEDIndex(x, y) {
-		return 0x0B + (7 - y) * 10 + x;
+		if (y > 0 && x >= 0 && x <= 8) {
+			return 0x0B + (8 - y) * 10 + x;
+		} else if (y == 0 && x >= 0 && x < 8) { // yes, i do actually mean < x and not <= x. the top row of buttons only has 7 buttons
+			return 0x68 + x;
+		} else {
+			return -1
+		}
 	}
 
-	setLED(i, color) {
+	setLED(leds, color) {
+		leds = this._parseLEDs(leds);
 		color = new Color(color);
-		this._sendRGB([
-			i,
-			Math.floor(color.red() / 4),
-			Math.floor(color.blue() / 4),
-			Math.floor(color.green() / 4)
-		]);
+
+		for (let i = 0; i < leds.length; i++) {
+			this._sendRGB([
+				leds[i],
+				Math.floor(color.red() / 4),
+				Math.floor(color.green() / 4),
+				Math.floor(color.blue() / 4)
+			]);
+		}
 	}
 
 	_sendRGB(messages) {
-		console.log(messages);
 		if (messages.length / 4 > 80) {
 			throw new Error("Too many LED messages at once. Max supported is 80");
 		}
 		let message = [0xF0, 0x00, 0x20, 0x29, 0x02, 0x18, 0x0B];
 		message = message.concat(messages);
 		message = message.concat([0xF7]);
-		console.log(message);
 		this.midiOutput.sendMessage(message);
 	}
-}
+};

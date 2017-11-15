@@ -3,8 +3,8 @@ const mpd = require("mpd");
 const ProgressBar = require("./progressbar.js");
 
 module.exports = class MusicProgressBar extends ProgressBar {
-	constructor(cmdStream, mpdClient, leds) {
-		super(cmdStream, leds);
+	constructor(device, mpdClient, leds) {
+		super(device, leds);
 
 		this.mpdClient = mpdClient;
 
@@ -25,4 +25,4 @@ module.exports = class MusicProgressBar extends ProgressBar {
 			return super.refresh();
 		}
 	}
-}
+};

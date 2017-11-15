@@ -2,15 +2,15 @@ const Color = require("color");
 
 class ProgressBar {
 	/**
-	 * @param {WritableStream} cmdStream
+	 * @param {Device} device
 	 * @param {String[]} leds
 	 * @param {Object} [options]
 	 * @param {Color|Any} [options.background]
 	 * @param {Color|Any} [options.foreground]
 	 * @param {Number} [options.value]
 	 */
-	constructor(cmdStream, leds, options) {
-		this._stream = cmdStream;
+	constructor(device, leds, options) {
+		this.device = device;
 
 		this.leds = leds;
 
@@ -21,32 +21,22 @@ class ProgressBar {
 	}
 
 	refresh() {
-		this._stream.write(this.getCommands() + "\n");
-	}
-
-	getCommands() {
 		const foregroundWidth = Math.floor(this.value * this.leds.length);
 
 		const aliasedLed = Math.ceil(this.value * this.leds.length) - 1;
 		const aliasedAmount = (this.value * this.leds.length) % 1;
 		const aliasedColor = this.background.mix(this.foreground, aliasedAmount);
 
-		const commands = [];
-
 		// Background
-		// if (backgroundWidth > 0) {
-		commands.push("rgb " + this.leds.slice(foregroundWidth + Math.ceil(aliasedAmount), this.leds.length) + ":" + this.background.hex().substr(1));
-		// }
+		this.device.setLED(this.leds.slice(foregroundWidth + Math.ceil(aliasedAmount), this.leds.length), this.background);
 
 		// Foreground
 		if (foregroundWidth > 0) {
-			commands.push("rgb " + this.leds.slice(0, foregroundWidth) + ":" + this.foreground.hex().substr(1));
+			this.device.setLED(this.leds.slice(0, foregroundWidth), this.foreground);
 		}
 
 		// Aliased pixel
-		commands.push("rgb " + this.leds[aliasedLed] + ":" + aliasedColor.hex().substr(1));
-
-		return commands.join(" ");
+		this.device.setLED(this.leds[aliasedLed], aliasedColor);
 	}
 }
 

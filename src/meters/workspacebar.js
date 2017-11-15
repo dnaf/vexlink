@@ -5,8 +5,8 @@ const cp = Promise.promisifyAll(require("child_process"));
 const ProgressBar = require("./progressbar.js");
 
 module.exports = class WorkspaceBar {
-	constructor(cmdStream, i3Client, leds, options) {
-		this.cmdStream = cmdStream;
+	constructor(device, i3Client, leds, options) {
+		this.device = device;
 		this.i3Client = i3Client;
 		this.leds = leds;
 
@@ -37,9 +37,8 @@ module.exports = class WorkspaceBar {
 				} else if (workspace.visible) {
 					color = this.visibleColor;
 				}
-				commands.push("rgb " + led + ":" + color.hex().substr(1));
+				this.device.setLED(led, color);
 			}
 		}
-		return this.cmdStream.write(commands.join(" "));
 	}
-}
+};
