@@ -1,0 +1,15 @@
+[input]
+method = pulse
+
+[output]
+method = raw
+
+style = mono
+
+# Raw output target. A fifo will be created if target does not exist.
+raw_target = /tmp/cava
+data_format = binary
+
+# Binary bit format, can be '8bit' (0-255) or '16bit' (0-65530).
+bit_format = 16bit
+
